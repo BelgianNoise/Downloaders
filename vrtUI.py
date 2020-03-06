@@ -1,6 +1,6 @@
 from tkinter import *
-import tkinter.scrolledtext as scr
-import vrtSeasonDownload as vsd 
+import tkinter.scrolledtext as scr 
+import vrtSeasonDownload as vsd
 
 myFont = ("Arial", 15)
 
@@ -41,35 +41,20 @@ txt4 = Entry(w, width=50, font=myFont)
 txt4.insert(END, "H:\\Films\\")
 txt4.grid(row=6, column=1, pady=(0,20), padx=(0, 40))
 
-# Output Window
-out = scr.ScrolledText(w, width=50, height=10, font=("Arial", 12))
-out.grid(row=8, column=1, padx=(0, 40), pady=(20, 30))
-
 # button
-def clickHelper(l):
-    # show info to user
-    stemp = "#############################################\n"
-    stemp += "## Downloading these videos ######################\n"
-    stemp += "#############################################\n\n"
-    out.insert(INSERT, stemp)
-    for x in li:
-        out.insert(INSERT, x + "\n")
-        
 def click():
     url = txt3.get()
     li = vsd.getList(url)
-    clickHelper(li)
-    
     mail = txt.get()
     pw = txt2.get()
     path = txt4.get()
     vsd.downloadList(li, path, mail, pw)
-    
     return True
 
 btn = Button(w, text="Download", font=myFont, command=click, bg="#ccc")
-btn.grid(row=7, column=1, padx=(0, 40))
+btn.grid(row=7, column=1, padx=(0, 40), pady=(0,30))
 
 w.mainloop()
+
 
 

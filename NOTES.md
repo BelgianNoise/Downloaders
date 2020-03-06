@@ -1,3 +1,6 @@
+# Pyinstaller
+c:\Users\kinga\AppData\Roaming\Python\Python38\Scripts\pyinstaller.exe --onefile vrtUI.py
+
 ffmpeg -i infile outfile
 
 ffmpeg -i in.mp4 -vf "scale=1920x1080:flags=lanczos,unsharp=7:7" -b:a 150k -b:v 2000k out.mp4
