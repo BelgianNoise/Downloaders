@@ -14,9 +14,10 @@ def downloadList(listt, path, us, pw):
     os.chdir(path)
     for m in listt:
         print("Downloading: '" + re.findall(r'/([^/]*)/$', m)[0] + "'...")
-        ydl_opts = {}
-        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-            ydl.download(["vrt.be" + m])
-        # command = "youtube-dl vrt.be" + m + " --username "+us+" --password "+pw
-        # process = subprocess.Popen(command.split(), stdout=subprocess.PIPE, shell=True)
-        # process.wait()
+        # ydl_opts = {}
+        # with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+        #     ydl.download(["vrt.be" + m])
+        command = "youtube-dl vrt.be" + m + " --username "+us+" --password "+pw
+        process = subprocess.Popen(command.split(), stdout=subprocess.PIPE, shell=True)
+        out, error = process.communicate()
+        print(out)
