@@ -32,3 +32,6 @@ ffmpeg -i xx.mp3 -filter_complex "showwaves=mode=cline:size=1280x720:colors=#FFF
 
 # upscalen
 -vf scale=1920x1080:flags=lanczos
+
+# Merge audio and video, video can not have audio
+ffmpeg -i video.mp4 -i audio.m4a -c:v copy -c:a aac output.mp4
