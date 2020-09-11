@@ -35,3 +35,6 @@ ffmpeg -i xx.mp3 -filter_complex "showwaves=mode=cline:size=1280x720:colors=#FFF
 
 # Merge audio and video, video can not have audio
 ffmpeg -i video.mp4 -i audio.m4a -c:v copy -c:a aac output.mp4
+
+# cutting video (ss = start time, t = duration)
+ffmpeg -i video.mp4 -ss 00:02:54 -t 00:00:05 -async 1 -c copy cut.mp4
