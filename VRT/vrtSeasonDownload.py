@@ -20,4 +20,4 @@ def downloadList(listt, path, us, pw):
         command = "youtube-dl vrt.be" + m + " --username "+us+" --password "+pw
         process = subprocess.Popen(command.split(), stdout=subprocess.PIPE, shell=True)
         out, error = process.communicate()
-        print(out)
+        print("Finished downloading: " + re.findall(r'/([^/]*)/$', m)[0])
