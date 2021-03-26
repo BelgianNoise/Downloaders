@@ -27,7 +27,7 @@ txt2 = Entry(w, width=50, show="*", font=myFont)
 txt2.grid(row=2, column=1, pady=(0,10), padx=(0, 40))
 
 #Link to page
-lbl3 = Label(w, text="De link naar de VRT.nu pagina:", font=myFont)
+lbl3 = Label(w, text="De link naar de VRT.nu playlist pagina:", font=myFont)
 lbl3.grid(row=3, column=1, pady=(20,10))
 # Link Fiels
 txt3 = Entry(w, width=50, font=myFont)

@@ -19,6 +19,7 @@ def downloadList(listt, path, us, pw):
         ydl_opts = {
             'username': us,
             'password': pw,
+            'quiet': True,
         }
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             ydl.download([f'vrt.be{m}'])
