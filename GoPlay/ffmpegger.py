@@ -8,7 +8,7 @@ import subprocess
 
 # Initiate the parser
 parser = argparse.ArgumentParser(description="Download (and encode) a list of m3u8 links. Created to help downloading from goplay.be. Default settings are configured to download/encode 540p streams.")
-parser.add_argument( "-f", "--file", help="Name of the file that contains list of m3u8 links")
+parser.add_argument( "-f", "--file", help="Name of the file that contains the list of m3u8 links, every one on a new line")
 parser.add_argument("--downloadOnly", help="Only download, don't encode. Very light on the CPU", action="store_true")
 parser.add_argument("--useDefaultFileNaming", help="Don't use my personalised naming conventions", action="store_true")
 parser.add_argument("--ba", help="The audio bitrate to encode in in kbps")
