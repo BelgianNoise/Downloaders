@@ -8,7 +8,7 @@ import subprocess
 
 # Initiate the parser
 parser = argparse.ArgumentParser(description="Download (and encode) a list of m3u8 links. Created to help downloading from goplay.be. Default settings are configured to download/encode 540p streams.")
-parser.add_argument( "-f", "--file", help="Name of the file that contains the list of m3u8 links, every one on a new line")
+parser.add_argument( "-f", "--file", help="Name of the file that contains list of m3u8 links")
 parser.add_argument("--downloadOnly", help="Only download, don't encode. Very light on the CPU", action="store_true")
 parser.add_argument("--useDefaultFileNaming", help="Don't use my personalised naming conventions", action="store_true")
 parser.add_argument("--ba", help="The audio bitrate to encode in in kbps")
@@ -92,25 +92,36 @@ def camelCasewithDots(string):
     split = string.replace('_', ' ').title().replace(' ', '.')
     return split
 
-def generateOutputFileName(match, useDefaultFileNaming, downloadOnly):
-    name = camelCasewithDots(match.group(1))
-    season = f"0{match.group(2)}" if len(match.group(2)) == 1 else match.group(2)
-    episode = f"0{match.group(3)}" if len(match.group(3)) == 1 else match.group(3)
-    if useDefaultFileNaming or downloadOnly:
-        return f"{name}.S{season}E{episode}.mp4"
+def generateOutputFileName(line, useDefaultFileNaming, downloadOnly):
+    regexp = re.compile(r'.*\/(.*)_(\d{1,2})_(\d{1,2})_.*\/.*\/index.m3u8')
+    match = regexp.match(line)
+    print(f"match {match}")
+    if match:
+        name = camelCasewithDots(match.group(1))
+        season = f"0{match.group(2)}" if len(match.group(2)) == 1 else match.group(2)
+        episode = f"0{match.group(3)}" if len(match.group(3)) == 1 else match.group(3)
+        if useDefaultFileNaming or downloadOnly:
+            return f"{name}.S{season}E{episode}.mp4"
+        else:
+            return f"{name}.S{season}E{episode}.540p.WEB-DL.{bitrateVideo}kbps.{codecVideo[3:]}.BENOISE.mp4"
     else:
-        return f"{name}.S{season}E{episode}.540p.WEB-DL.{bitrateVideo}kbps.{codecVideo[3:]}.BENOISE.mp4"
+        regexp = re.compile(r'.*\/(.*)_.*\/.*\/index.m3u8')
+        match = regexp.match(line)
+        if match:
+            name = camelCasewithDots(match.group(1))
+            return f"{name}.mp4"
+        else:
+            return None
 
 # Read first line from file
 firstLine = getFirstLineFromFile(file)
 
 while firstLine:
     if not len(firstLine.strip()) == 0:
-        regexp = re.compile(r'.*\/(.*)_(\d{1,2})_(\d{1,2})_.*\/.*\/index.m3u8')
-        match = regexp.match(firstLine)
-        if match and len(match.groups()) == 3:
+        outputFileName = generateOutputFileName(firstLine, useDefaultFileNaming, downloadOnly)
+
+        if outputFileName:
             print("\n################################################################\n")
-            print(f"Valid m3u8 url found: '{firstLine}'")
             command = f"ffmpeg -i {firstLine}"
             if not downloadOnly:
                 command += f" -b:a {bitrateAudio}k -c:a {codecAudio}"
@@ -118,14 +129,16 @@ while firstLine:
                 command += f" -preset {preset}"
             else:
                 command += " -vcodec copy -acodec copy -c copy"
-            command += f" {generateOutputFileName(match, useDefaultFileNaming, downloadOnly)}"
-            
+
+            command += f" {outputFileName}"
             print(f"Executing command: {command}")
 
             process = subprocess.Popen(command.split(), stdout=subprocess.PIPE, shell=True)
             out, error = process.communicate()
             
-            print(f"Finished downloading and encoding: {generateOutputFileName(match, useDefaultFileNaming, downloadOnly)}")
+            print(f"Finished downloading and encoding: {outputFileName}")
+        else:
+            print(f"Invalid line: {firstLine}")
 
     deleteFirstLineFromFile(file)
     firstLine = getFirstLineFromFile(file)
