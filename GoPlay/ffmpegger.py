@@ -45,7 +45,7 @@ if not bitrateAudio:
 # Handle input variable BV
 bitrateVideo = args.bv
 if not bitrateVideo:
-    bitrateVideo = "800"
+    bitrateVideo = "1000"
     print(f"No value was provided for '--bv', using default '{bitrateVideo}'")
 # Handle input variable CA
 codecAudio = args.ca
@@ -92,10 +92,12 @@ def camelCasewithDots(string):
     split = string.replace('_', ' ').title().replace(' ', '.')
     return split
 
+def bitrateToString(bitrate):
+    return f"{int(bitrate) / 1000}Mbps" if int(bitrate) % 1000 == 0 else f"{bitrate}kbps"
+
 def generateOutputFileName(line, useDefaultFileNaming, downloadOnly):
     regexp = re.compile(r'.*\/(.*)_(\d{1,2})_(\d{1,2})_.*\/.*\/index.m3u8')
     match = regexp.match(line)
-    print(f"match {match}")
     if match:
         name = camelCasewithDots(match.group(1))
         season = f"0{match.group(2)}" if len(match.group(2)) == 1 else match.group(2)
@@ -103,7 +105,7 @@ def generateOutputFileName(line, useDefaultFileNaming, downloadOnly):
         if useDefaultFileNaming or downloadOnly:
             return f"{name}.S{season}E{episode}.mp4"
         else:
-            return f"{name}.S{season}E{episode}.540p.WEB-DL.{bitrateVideo}kbps.{codecVideo[3:]}.BENOISE.mp4"
+            return f"{name}.S{season}E{episode}.720p.WEB-DL.{bitrateToString(bitrateVideo)}.{codecVideo[3:]}.BENOISE.mp4"
     else:
         regexp = re.compile(r'.*\/(.*)_.*\/.*\/index.m3u8')
         match = regexp.match(line)
