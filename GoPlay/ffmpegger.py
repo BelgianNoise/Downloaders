@@ -93,7 +93,7 @@ def camelCasewithDots(string):
     return split
 
 def bitrateToString(bitrate):
-    return f"{int(bitrate) / 1000}Mbps" if int(bitrate) % 1000 == 0 else f"{bitrate}kbps"
+    return "{:.0f}Mbps".format(int(bitrate) / 1000) if int(bitrate) % 1000 == 0 else f"{bitrate}kbps"
 
 def generateOutputFileName(line, useDefaultFileNaming, downloadOnly):
     regexp = re.compile(r'.*\/(.*)_(\d{1,2})_(\d{1,2})_.*\/.*\/index.m3u8')
