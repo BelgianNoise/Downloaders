@@ -1,13 +1,6 @@
-# Pyinstaller
-c:\Users\kinga\AppData\Roaming\Python\Python38\Scripts\pyinstaller.exe --onefile vrtUI.py
 
-ffmpeg -i infile outfile
+ffmpeg -i in.mp4 -vf "scale=1920x1080:flags=lanczos,unsharp=7:7" -b:a 80k -b:v 2000k -c:a aac -c:v libx264 -preset veryslow out.mp4
 
-ffmpeg -i in.mp4 -vf "scale=1920x1080:flags=lanczos,unsharp=7:7" -b:a 150k -b:v 2000k out.mp4
-
-#specify bitrate
--b:a <bitrate>k
--b:v <bitrate>k
 
 # double the volume
 -filter:a "volume=2"
