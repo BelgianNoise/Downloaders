@@ -1,7 +1,7 @@
 # Downloaders
 Scripts that help me download movies/series
 
-## /VRT/vrtUI.py
+## /VRT/vrtUI.py ( Currently broken because of ytdl - [issue1](https://github.com/ytdl-org/youtube-dl/issues/29044) - [issue2](https://github.com/ytdl-org/youtube-dl/issues/29534) )
 * Download full season from vrt.nu
 ### Required installed software
 * Python : https://www.python.org/downloads/
